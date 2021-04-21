@@ -1,5 +1,5 @@
 
-public class btates {
+public class task5 {
 
 	//50 to 250
 	//kol value div by 16
