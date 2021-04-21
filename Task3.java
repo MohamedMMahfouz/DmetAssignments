@@ -1,52 +1,38 @@
+import java.awt.Color;
 import java.awt.image.BufferedImage;
-import java.awt.image.BufferedImageOp;
-import java.awt.image.ConvolveOp;
-import java.awt.image.Kernel;
 import java.io.File;
 import java.io.IOException;
 
 import javax.imageio.ImageIO;
 
-public class Task3 {
-	
-	public static void main(String[] args) {
-		float[] matrix = {
-		        0.111f, 0.111f, 0.111f, 
-		        0.111f, 0.111f, 0.111f, 
-		        0.111f, 0.111f, 0.111f, 
-		    };
+public class task3 {
 
-		    BufferedImageOp op = new ConvolveOp( new Kernel(3, 3, matrix) );
-		    try {
-				BufferedImage image= ImageIO.read(new File("butterfly_22476.png"));
-				BufferedImage img = new BufferedImage(image.getWidth(), image.getHeight(), image.getType()) ;
-				//blurredImage =
-				op.filter(image, img);
-				ImageIO.write(img, "jpg", new File("Gauss3.jpg"));
+	public static int[] Histogram(BufferedImage input){
+		int width= input.getWidth();
+		int height = input.getHeight();
+		BufferedImage img= new BufferedImage(width, height,
+                BufferedImage.TYPE_3BYTE_BGR);
+		int r;
+		int[] h= new int[256];
+		
+		for (int row = 0; row < height; row++) {
+			for (int col = 0; col < width; col++) {
+				Color c= new Color(input.getRGB(col,row));
+				r=c.getRed();
+				h[r]+=1;
 				
-				//7*7
-				float[] matrix2 = {
-				        0.0204f, 0.0204f, 0.0204f,0.0204f, 0.0204f, 0.0204f,0.0204f,
-				        0.0204f, 0.0204f, 0.0204f,0.0204f, 0.0204f, 0.0204f,0.0204f,
-				        0.0204f, 0.0204f, 0.0204f,0.0204f, 0.0204f, 0.0204f,0.0204f,
-				        0.0204f, 0.0204f, 0.0204f,0.0204f, 0.0204f, 0.0204f,0.0204f,
-				        0.0204f, 0.0204f, 0.0204f,0.0204f, 0.0204f, 0.0204f,0.0204f,
-				        0.0204f, 0.0204f, 0.0204f,0.0204f, 0.0204f, 0.0204f,0.0204f,
-				        0.0204f, 0.0204f, 0.0204f,0.0204f, 0.0204f, 0.0204f,0.0204f,
-				    };
-				BufferedImageOp op2 = new ConvolveOp( new Kernel(7, 7, matrix2) );
-				BufferedImage img2 = new BufferedImage(image.getWidth(), image.getHeight(), image.getType()) ;
-				//blurredImage =
-				op2.filter(image, img2);
-				ImageIO.write(img2, "jpg", new File("Gauss7.jpg"));
-				
-				
-
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
 			}
-		    
+		}
+				return h;
 	}
-	
+	public static void main(String[] args) throws IOException {
+		BufferedImage image= ImageIO.read(new File("greyimage.png"));
+		int[] histogram= Histogram(image);
+		for (int i = 0; i < histogram.length; i++) {
+			System.out.println(histogram[i]);
+		}
+		
+	}
 }
+
+
